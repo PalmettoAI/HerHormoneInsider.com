@@ -1,0 +1,3 @@
+# Pre-compressed asset artifacts (regenerated at build/deploy time)
+*.br
+*.gz
