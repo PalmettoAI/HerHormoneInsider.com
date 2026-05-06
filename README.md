@@ -21,34 +21,41 @@ See `HHI_SALES_BLOG_ARCHITECTURE.md` and `HHI_LETTER_01_THE_4AM_LETTER.md` (kept
 | CDN / DNS | Cloudflare (Limitless Life LLC account) |
 | Registrar | Namecheap (nameservers point to Cloudflare) |
 
-## Edit pattern — direct on VPS
+## Two-actor edit model
 
-For most edits (typos, copy tweaks, single-letter additions), work directly on the VPS via SSH. Caddy serves from disk; changes are live immediately, no rebuild.
+There are two people who edit this site, and they have different tools:
 
-```bash
-ssh -i ~/.ssh/massivegrid_palmetto root@172.82.66.246
-cd /var/www/HerHormoneInsider.com
-# edit files in place
-exit
-```
+### Matt (client) — edits the live VPS directly
 
-When you do edit on the VPS, mirror the change back to this repo afterward (next section).
+Matt uses **SFTP/SSH to the VPS** with FileZilla or similar. He edits HTML files in place at `/var/www/HerHormoneInsider.com/`. Caddy serves from disk, so changes are live within a second. No rebuild step. No GitHub login required.
 
-## Edit pattern — full rebuild from scratch
+A plain-English Matt-facing guide lives at `/root/EDIT-GUIDE.md` on the VPS — he sees it the moment he SSHs in. It covers FileZilla setup, what to edit vs. not touch, how to add a new letter, how to test, and how to recover from breakage.
 
-For a rebuild — new letters, design system changes, schema updates — use the deploy bundle on the maintainer's Mac at `~/projects/hhi-deploy/`:
+### Deniz (maintainer) — edits source scripts, runs the deploy pipeline
+
+The build pipeline lives at `~/projects/hhi-deploy/` on Deniz's Mac. Source of truth for Deniz-controlled files (schema, CSS, JS, build scripts) lives there, NOT on GitHub. GitHub is just a disaster-recovery mirror.
 
 ```bash
 cd ~/projects/hhi-deploy
-./deploy.sh             # full pipeline: build → compress → push to VPS → mirror to GitHub
-./deploy.sh --no-push   # build + push to VPS, skip GitHub mirror
-./deploy.sh --dry-run   # build only, output in /tmp/hhi-build/
+./deploy.sh                  # SAFE — overwrites only build-generated files; preserves Matt's edits
+./deploy.sh --diff           # preview what would change without writing
+./deploy.sh --full-rebuild   # DESTRUCTIVE — atomic-swap; wipes any VPS-only files (preserved as .old.<ts>)
+./deploy.sh --no-push        # skip the GitHub mirror step
+./deploy.sh --dry-run        # build only; don't touch VPS or GitHub
 ```
 
 The bundle:
 - `scripts/` — Python build scripts (page generation, image placeholders, prefix handling)
-- `static/` — CSS, JS, llms.txt, favicon (copied as-is into the build)
+- `static/` — CSS, JS, llms.txt, favicon, `EDIT-GUIDE.md` (copied as-is into the build)
 - `deploy.sh` — orchestration
+
+### How the two actors stay out of each other's way
+
+- `./deploy.sh` defaults to **SAFE mode**: rsync without `--delete`. Matt's hand-edited files on the VPS that aren't in the build will not be deleted. Files that exist in both will be overwritten by the build version (so coordinate before redeploying anything Matt has touched).
+- `./deploy.sh --full-rebuild` is the destructive one. Use only after coordinating with Matt or after pulling his edits back into the build scripts.
+- `./deploy.sh --diff` shows what a SAFE-mode run would overwrite. Always run it first if you're not sure.
+
+For new letters: Matt adds them directly on the VPS in his `/letters/<slug>/` workflow. They live alongside Deniz's letters and survive SAFE-mode rebuilds. Only `--full-rebuild` would wipe them.
 
 ## Path-prefix gotcha
 
