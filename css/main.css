@@ -1,0 +1,848 @@
+/* Her Hormone Insider — Marlowe Bennett letters
+   Source of truth for visual system. Edit here. */
+
+/* ============================================================
+   §6.1 — Design tokens
+   ============================================================ */
+:root {
+  --color-bg: #FAF7F2;
+  --color-text: #1F1B16;
+  --color-text-soft: #5C544A;
+  --color-accent: #8E0E2E;
+  --color-accent-hover: #6B0A22;
+  --color-border: #E5DED2;
+  --color-card-bg: #F2EBDD;
+  --color-overlay: rgba(31, 27, 22, 0.5);
+
+  --font-serif: "Source Serif 4", Charter, "Iowan Old Style", Georgia, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+
+  --fs-body: 1.1875rem;
+  --fs-body-mobile: 1.0625rem;
+  --fs-h1: 2.5rem;
+  --fs-h1-mobile: 2rem;
+  --fs-h2: 1.625rem;
+  --fs-h2-mobile: 1.4375rem;
+  --fs-h3: 1.5rem;
+  --fs-meta: 0.875rem;
+  --fs-small: 0.9375rem;
+  --fs-fine-print: 0.8125rem;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-xxl: 6rem;
+
+  --content-width: 680px;
+  --content-width-narrow: 560px;
+  --header-width: 1200px;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+
+  --lh-body: 1.75;
+  --lh-heading: 1.25;
+  --lh-tight: 1.1;
+}
+
+/* ============================================================
+   §6.10 — @font-face (self-hosted Source Serif 4 variable)
+   Two files cover the 400-700 weight axis (normal + italic).
+   ============================================================ */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("/HerHormoneInsider.com/fonts/source-serif-4-regular.woff2") format("woff2-variations"),
+       url("/HerHormoneInsider.com/fonts/source-serif-4-regular.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("/HerHormoneInsider.com/fonts/source-serif-4-italic.woff2") format("woff2-variations"),
+       url("/HerHormoneInsider.com/fonts/source-serif-4-italic.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================
+   §6.2 — Reset & base typography
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 720px) {
+  body { font-size: var(--fs-body-mobile); }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-accent);
+  color: #FFFFFF;
+  padding: var(--space-sm) var(--space-md);
+  z-index: 999;
+  text-decoration: none;
+}
+.skip-link:focus { left: 0; }
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-lg);
+  color: var(--color-text);
+}
+@media (max-width: 720px) {
+  h1 { font-size: var(--fs-h1-mobile); }
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  font-weight: 600;
+  margin: var(--space-xl) 0 var(--space-md);
+  color: var(--color-text);
+}
+@media (max-width: 720px) {
+  h2 { font-size: var(--fs-h2-mobile); }
+}
+
+h3 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  font-weight: 600;
+  margin: 0 0 var(--space-sm);
+}
+
+p { margin: 0 0 var(--space-md); }
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast) var(--ease);
+}
+a:hover, a:focus {
+  color: var(--color-accent-hover);
+  text-decoration-thickness: 2px;
+}
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.letter-content ul {
+  padding-left: 1.5em;
+  margin: 0 0 var(--space-md);
+  list-style: disc;
+}
+.letter-content ul li {
+  margin-bottom: var(--space-sm);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-xl) auto;
+  max-width: 4rem;
+}
+
+/* ============================================================
+   §6.3 — Site header & breadcrumb
+   ============================================================ */
+.site-header {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: transform var(--duration-normal) var(--ease);
+}
+.site-header.hidden { transform: translateY(-100%); }
+
+.site-header-inner {
+  max-width: var(--header-width);
+  margin: 0 auto;
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.brand {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.brand:hover, .brand:focus {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.primary-nav ul {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.primary-nav a {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.primary-nav a:hover, .primary-nav a:focus {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.primary-nav a.nav-cta {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+.primary-nav a.nav-cta:hover, .primary-nav a.nav-cta:focus {
+  color: var(--color-accent-hover);
+}
+
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  width: 44px;
+  height: 44px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+.mobile-nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-text);
+}
+
+@media (max-width: 720px) {
+  .primary-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-md);
+  }
+  .primary-nav.is-open { display: block; }
+  .primary-nav ul {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+  .mobile-nav-toggle { display: flex; }
+}
+
+.breadcrumb {
+  max-width: var(--content-width);
+  margin: var(--space-lg) auto var(--space-md);
+  padding: 0 var(--space-md);
+}
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-text-soft);
+  letter-spacing: 0.02em;
+}
+.breadcrumb li:not(:last-child)::after {
+  content: " /";
+  margin-left: var(--space-xs);
+  color: var(--color-text-soft);
+}
+.breadcrumb a {
+  color: var(--color-text-soft);
+  text-decoration: none;
+}
+.breadcrumb a:hover, .breadcrumb a:focus {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.breadcrumb [aria-current="page"] { color: var(--color-text); }
+
+/* ============================================================
+   §6.4 — Letter body
+   ============================================================ */
+.letter {
+  padding: var(--space-lg) var(--space-md) var(--space-xxl);
+}
+
+.letter-body {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.letter-header {
+  margin-bottom: var(--space-xl);
+}
+
+.letter-meta {
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-text-soft);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.letter-meta .letter-number {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.letter-meta .meta-divider {
+  color: var(--color-text-soft);
+}
+
+.letter-meta time,
+.letter-meta .reading-time {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--fs-small);
+  font-family: var(--font-sans);
+  color: var(--color-text-soft);
+}
+
+.byline a {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.byline-text { display: inline-block; }
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.letter-content .salutation {
+  font-style: italic;
+  font-size: 1.125em;
+  font-weight: 400;
+  margin: 0 0 var(--space-md);
+  font-family: var(--font-serif);
+  line-height: var(--lh-body);
+}
+
+.letter-content .emphasis-line {
+  font-style: italic;
+  text-align: center;
+  margin: var(--space-lg) 0;
+  font-size: 1.0625em;
+  color: var(--color-text);
+}
+
+.signature {
+  font-style: italic;
+  margin-top: var(--space-lg);
+  font-size: 1.125em;
+}
+
+.postscript {
+  margin-top: var(--space-xl);
+}
+
+.postscript h2 {
+  font-style: italic;
+  margin-top: 0;
+}
+
+/* ============================================================
+   §6.5 — IG CTA card + buttons
+   ============================================================ */
+.cta-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: var(--space-lg) var(--space-md);
+  margin: var(--space-xl) auto;
+  max-width: var(--content-width-narrow);
+  text-align: center;
+}
+
+.cta-card h3 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  margin: 0 0 var(--space-sm);
+}
+
+.cta-card .cta-subheading {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-md);
+  line-height: 1.5;
+}
+
+.cta-card .cta-handle {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  color: var(--color-text-soft);
+  margin-top: var(--space-sm);
+  margin-bottom: 0;
+  letter-spacing: 0.02em;
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background var(--duration-fast) var(--ease);
+  min-height: 48px;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #FFFFFF;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--color-accent-hover);
+  color: #FFFFFF;
+  text-decoration: none;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   §6.6 — Next steps & author bio
+   ============================================================ */
+.next-steps { margin: var(--space-xl) 0; }
+.next-steps p { margin-bottom: var(--space-sm); }
+.next-steps .next-step-link { margin-bottom: var(--space-md); }
+
+.next-letter-link {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.0625em;
+  text-decoration: underline;
+}
+
+.author-bio {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  max-width: var(--content-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.author-bio img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.author-bio-text { flex: 1; }
+
+.author-bio-text p {
+  font-size: var(--fs-small);
+  color: var(--color-text-soft);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.author-bio-text strong { color: var(--color-text); }
+
+@media (max-width: 540px) {
+  .author-bio {
+    flex-direction: column;
+    text-align: left;
+  }
+}
+
+/* ============================================================
+   §6.7 — Share bar
+   ============================================================ */
+.share-bar {
+  margin: var(--space-xl) auto;
+  padding: var(--space-md);
+  border: 1.5px dashed var(--color-border);
+  border-radius: 4px;
+  max-width: var(--content-width);
+  text-align: center;
+}
+
+.share-bar-prompt {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  color: var(--color-text-soft);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-sm);
+}
+
+.share-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease);
+}
+.share-btn:hover, .share-btn:focus {
+  background: var(--color-card-bg);
+  border-color: var(--color-text-soft);
+  color: var(--color-text);
+  text-decoration: none;
+}
+.share-btn--email {
+  border-color: var(--color-text);
+}
+
+@media (min-width: 720px) {
+  .share-mobile-only { display: none; }
+}
+
+/* ============================================================
+   §6.8 — Site footer
+   ============================================================ */
+.site-footer {
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-xl) var(--space-md);
+  margin-top: var(--space-xxl);
+}
+
+.site-footer-inner {
+  max-width: var(--header-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.site-footer nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.site-footer a {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  color: var(--color-text-soft);
+  text-decoration: none;
+}
+.site-footer a:hover, .site-footer a:focus {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.footer-disclaimer {
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine-print);
+  color: var(--color-text-soft);
+  font-style: italic;
+  margin-bottom: var(--space-sm);
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.footer-mailing,
+.footer-tagline {
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine-print);
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-xs);
+}
+
+.footer-attribution {
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine-print);
+  color: var(--color-text-soft);
+  margin-top: var(--space-md);
+  opacity: 0.8;
+}
+
+.footer-attribution a {
+  color: var(--color-text-soft);
+}
+
+/* ============================================================
+   Homepage / Library / Cluster grid components
+   ============================================================ */
+.hero-letter {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+}
+
+.hero-letter .salutation {
+  font-style: italic;
+  font-size: 1.25em;
+  margin-bottom: var(--space-md);
+}
+
+.hero-letter h1 {
+  font-size: var(--fs-h1);
+  margin-bottom: var(--space-md);
+}
+
+.section-block {
+  max-width: var(--content-width);
+  margin: var(--space-xl) auto;
+  padding: 0 var(--space-md);
+}
+
+.library-grid {
+  max-width: var(--header-width);
+  margin: var(--space-xl) auto;
+  padding: 0 var(--space-md);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.library-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+
+.library-card:hover, .library-card:focus {
+  border-color: var(--color-text-soft);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.library-card .card-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xs);
+}
+
+.library-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+  line-height: 1.3;
+}
+
+.library-card p {
+  font-size: var(--fs-small);
+  color: var(--color-text-soft);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.library-card .card-status {
+  font-family: var(--font-sans);
+  font-size: var(--fs-fine-print);
+  color: var(--color-text-soft);
+  margin-top: var(--space-sm);
+  font-style: italic;
+}
+
+/* Cluster pillar nav */
+.cluster-nav {
+  max-width: var(--content-width);
+  margin: var(--space-xl) auto;
+  padding: var(--space-lg) var(--space-md);
+  background: var(--color-card-bg);
+  border-radius: 4px;
+}
+
+.cluster-nav h3 {
+  margin-bottom: var(--space-md);
+}
+
+.cluster-nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.cluster-nav li {
+  margin-bottom: var(--space-sm);
+  padding-left: 1em;
+  position: relative;
+}
+
+.cluster-nav li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+/* Stub / coming-soon page */
+.stub-page {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-md);
+  text-align: center;
+}
+
+.stub-page h1 {
+  margin-bottom: var(--space-md);
+}
+
+.stub-page .stub-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-meta);
+  color: var(--color-text-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+.stub-page .stub-body {
+  font-size: 1.125em;
+  color: var(--color-text-soft);
+  max-width: 540px;
+  margin: 0 auto var(--space-lg);
+  line-height: 1.6;
+}
+
+.stub-page .stub-cta {
+  margin-top: var(--space-lg);
+}
+
+/* ============================================================
+   §6.9 — Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
