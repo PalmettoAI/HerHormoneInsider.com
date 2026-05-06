@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://herhormoneinsider.com/</id>
+  <title>Her Hormone Insider — Letters</title>
+  <subtitle>Letters for women in The Insider's Window — the 10-to-15-year hormonal transition between 35 and 50 that medicine misses.</subtitle>
+  <link href="https://herhormoneinsider.com/" rel="alternate" type="text/html"/>
+  <link href="https://herhormoneinsider.com/feed.xml" rel="self" type="application/atom+xml"/>
+  <updated>2026-05-06T17:52:47Z</updated>
+  <author>
+    <name>Marlowe Bennett</name>
+    <uri>https://herhormoneinsider.com/letters/how-i-got-here/</uri>
+  </author>
+  <rights>© 2026 Her Hormone Insider</rights>
+  <generator uri="https://herhormoneinsider.com/" version="1.0">Her Hormone Insider</generator>
+  <entry>
+    <id>https://herhormoneinsider.com/letters/the-4am-letter/</id>
+    <title>Why You Wake Up at 4 a.m. in Perimenopause — A Letter</title>
+    <link href="https://herhormoneinsider.com/letters/the-4am-letter/" rel="alternate" type="text/html"/>
+    <published>2026-05-06T08:00:00-04:00</published>
+    <updated>2026-05-06T08:00:00-04:00</updated>
+    <author>
+      <name>Marlowe Bennett</name>
+      <uri>https://herhormoneinsider.com/letters/how-i-got-here/</uri>
+    </author>
+    <category term="Sleep &amp; Cortisol"/>
+    <summary type="text">If you&#x27;re 35–50 and waking up at 3 or 4 a.m. with your heart racing — you&#x27;re not crazy, and your labs aren&#x27;t telling you the truth. A letter from a woman who lived it.</summary>
+  </entry>
+  <entry>
+    <id>https://herhormoneinsider.com/letters/the-belly-letter/</id>
+    <title>The Belly That Wasn&#x27;t There Last Year</title>
+    <link href="https://herhormoneinsider.com/letters/the-belly-letter/" rel="alternate" type="text/html"/>
+    <published>2026-05-06T08:00:00-04:00</published>
+    <updated>2026-05-06T08:00:00-04:00</updated>
+    <author>
+      <name>Marlowe Bennett</name>
+      <uri>https://herhormoneinsider.com/letters/how-i-got-here/</uri>
+    </author>
+    <category term="Belly &amp; Metabolism"/>
+    <summary type="text">Why the weight that arrived in your 40s isn&#x27;t a calorie problem. The cortisol-insulin shift behind perimenopause belly fat, and three structural eating shifts to try.</summary>
+  </entry>
+  <entry>
+    <id>https://herhormoneinsider.com/letters/why-your-labs-are-normal/</id>
+    <title>Why Your Labs Are &#x27;Normal&#x27; But You&#x27;re Not</title>
+    <link href="https://herhormoneinsider.com/letters/why-your-labs-are-normal/" rel="alternate" type="text/html"/>
+    <published>2026-05-06T08:00:00-04:00</published>
+    <updated>2026-05-06T08:00:00-04:00</updated>
+    <author>
+      <name>Marlowe Bennett</name>
+      <uri>https://herhormoneinsider.com/letters/how-i-got-here/</uri>
+    </author>
+    <category term="Labs &amp; Diagnosis"/>
+    <summary type="text">What standard hormone panels miss in perimenopause and the specific tests to ask for instead. A copy-paste lab panel for your next physical.</summary>
+  </entry>
+  <entry>
+    <id>https://herhormoneinsider.com/letters/how-i-got-here/</id>
+    <title>How I Got Here</title>
+    <link href="https://herhormoneinsider.com/letters/how-i-got-here/" rel="alternate" type="text/html"/>
+    <published>2026-05-06T08:00:00-04:00</published>
+    <updated>2026-05-06T08:00:00-04:00</updated>
+    <author>
+      <name>Marlowe Bennett</name>
+      <uri>https://herhormoneinsider.com/letters/how-i-got-here/</uri>
+    </author>
+    <category term="Founder Story"/>
+    <summary type="text">The founder story. Why I started writing these letters at 4:23 a.m. on a Tuesday in 2024 — and what happened in the two years before that.</summary>
+  </entry>
+</feed>
